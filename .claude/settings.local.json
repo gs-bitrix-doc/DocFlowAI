@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python -c \":*)",
+      "Bash(python -c \"from src.protector import MarkdownProtector; p = MarkdownProtector\\(\\); print\\(p.block_count\\)\")",
+      "Bash(cd:*)",
+      "Bash(python main.py input/crm-deal-get.md --dry-run)",
+      "Bash({ echo:*)",
+      "Bash(nl })"
+    ]
+  }
+}
