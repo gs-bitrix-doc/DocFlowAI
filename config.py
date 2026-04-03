@@ -34,8 +34,15 @@ def setup_logging() -> logging.Logger:
     return logging.getLogger(__name__)
 
 
-# Словарь терминов
+# Словарь терминов (идёт в промпт + в валидатор)
 def load_dictionary(path: str | Path = "data/dictionary.json") -> dict[str, str]:
+    with open(path, encoding="utf-8") as f:
+        return json.load(f)
+
+# Расширенный глоссарий (только в валидатор, не в промпт)
+def load_glossary(path: str | Path = "data/glossary.json") -> dict[str, str]:
+    if not Path(path).exists():
+        return {}
     with open(path, encoding="utf-8") as f:
         return json.load(f)
 

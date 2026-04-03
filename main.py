@@ -2,7 +2,7 @@ from pathlib import Path
 
 import click
 
-from config import build_prompt, load_dictionary, setup_logging
+from config import build_prompt, load_dictionary, load_glossary, setup_logging
 from src import pipeline
 
 
@@ -20,6 +20,7 @@ def main(file_path: str, dir_path: str, dry_run: bool):
 
     try:
         dictionary = load_dictionary()
+        glossary = load_glossary()
         prompt = build_prompt(dictionary)
 
         if dir_path:
@@ -30,10 +31,10 @@ def main(file_path: str, dir_path: str, dry_run: bool):
             logger.info(f"Найдено файлов: {len(files)}")
             for f in files:
                 logger.info(f"Переводим: {f.name}")
-                pipeline.run(str(f), dry_run, dictionary, prompt, logger)
+                pipeline.run(str(f), dry_run, dictionary, prompt, logger, glossary)
         else:
             logger.info(f"Переводим: {file_path}")
-            pipeline.run(file_path, dry_run, dictionary, prompt, logger)
+            pipeline.run(file_path, dry_run, dictionary, prompt, logger, glossary)
 
     except FileNotFoundError as e:
         logger.error(f"Файл не найден: {e}")

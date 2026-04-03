@@ -16,6 +16,20 @@ class ValidationResult:
         self.warnings.append(message)
 
 
+# Домены и паттерны которых не должно быть в переводе
+_FORBIDDEN_PATTERNS = [
+    (re.compile(r'https?://\S+\.ru[/\s"\'`]'), "Остался .ru домен"),
+    (re.compile(r'\bbitrix24\.ru\b'), "Остался домен bitrix24.ru"),
+    (re.compile(r'\b(GigaChat|YandexGPT|Яндекс|Yandex|ВКонтакте|VKontakte)\b', re.IGNORECASE), "Остался запрещённый бренд"),
+    (re.compile(r'\+7[\s-]?\(?\d{3}\)?[\s-]?\d{3}[\s-]?\d{2}[\s-]?\d{2}'), "Остался российский номер телефона"),
+]
+
+# Российские города
+_RUSSIAN_CITIES = re.compile(
+    r'\b(Москва|Санкт-Петербург|Новосибирск|Екатеринбург|Казань|Нижний Новгород|Калининград|Moscow|Saint Petersburg)\b'
+)
+
+
 class StructureValidator:
     def validate(
         self,
@@ -26,6 +40,8 @@ class StructureValidator:
         result = ValidationResult()
         orig = self._extract(original)
         trans = self._extract(translated)
+
+        # --- Структурные проверки ---
 
         if trans["placeholders"] > 0:
             result.add_error(
@@ -57,19 +73,35 @@ class StructureValidator:
                 f"Количество битрикс-блоков изменилось: {orig['bitrix_blocks']} → {trans['bitrix_blocks']}"
             )
 
-        if dictionary:
-            for ru_term, en_term in dictionary.items():
-                ru_present = ru_term.lower() in translated.lower()
-                en_present = en_term.lower() in translated.lower()
+        # --- Проверка словаря терминов ---
 
-                if ru_present:
+        if dictionary:
+            translated_no_code = self._strip_code(translated)
+            for ru_term, en_term in dictionary.items():
+                if not re.search(r'\b' + re.escape(ru_term) + r'\b', original, re.IGNORECASE):
+                    continue
+                if re.search(r'\b' + re.escape(ru_term) + r'\b', translated_no_code, re.IGNORECASE):
                     result.add_warning(
                         f"Термин не переведён: «{ru_term}» → ожидалось «{en_term}»"
                     )
-                elif not en_present:
+                elif not re.search(re.escape(en_term), translated_no_code, re.IGNORECASE):
                     result.add_warning(
-                        f"Возможно неверный перевод: «{ru_term}» → ожидалось «{en_term}»"
+                        f"Термин переведён неверно: «{ru_term}» → ожидалось «{en_term}»"
                     )
+
+        # --- Проверка запрещённого контента ---
+
+        translated_no_code = self._strip_code(translated)
+
+        for pattern, message in _FORBIDDEN_PATTERNS:
+            if pattern.search(translated_no_code):
+                result.add_warning(message)
+
+        if _RUSSIAN_CITIES.search(translated_no_code):
+            result.add_warning("Остались российские города/адреса")
+
+        if self._has_cyrillic(translated):
+            result.add_warning("В переводе остался кириллический текст")
 
         return result
 
@@ -82,3 +114,12 @@ class StructureValidator:
             "code_blocks": len(re.findall(r'```', content)),
             "bitrix_blocks": len(re.findall(r'\{%', content)),
         }
+
+    def _strip_code(self, content: str) -> str:
+        """Убирает блоки кода и инлайн-код чтобы не проверять их содержимое."""
+        content = re.sub(r'```.*?```', '', content, flags=re.DOTALL)
+        content = re.sub(r'`[^`]+`', '', content)
+        return content
+
+    def _has_cyrillic(self, text: str) -> bool:
+        return bool(re.search(r'[а-яёА-ЯЁ]', text))

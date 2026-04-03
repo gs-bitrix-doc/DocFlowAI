@@ -1,0 +1,12 @@
+{
+    "required.md": "Note on parameters",
+    "examples.md": "Note on examples",
+    "error-info.md": "Error handling",
+    "error-info-v3.md": "Error handling",
+    "system-errors.md": "System errors",
+    "events-index.md": "Server availability",
+    "auth-params-in-events.md": "Auth parameters in events",
+    "rest-result.md": "Result format",
+    "result-common-data.md": "Common result data",
+    "widget_crm.md": "Widget in CRM"
+}

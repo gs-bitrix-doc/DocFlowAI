@@ -1,31 +1,31 @@
 # Get deal by Id crm.deal.get
 
-> Scope: [`crm`](../../scopes/permissions.md)
+> Scope: [`crm`](../../scopes/permissions.md)  
+> 
+> Who can call the method: any user with the “read” access permission for deals
 
-> Who can execute the method: any user with “read” permission for deals
+{% note warning "Method development has been halted" %}
 
-{% note warning "Развитие метода остановлено" %}
-
-The method `crm.deal.get` continues to work, but it has a more up‑to‑date counterpart [crm.item.get](../universal/crm-item-get.md).
+The method `crm.deal.get` continues to work, but it has a more up‑to‑date equivalent [crm.item.get](../universal/crm-item-get.md).
 
 {% endnote %}
 
-The method `crm.deal.get` returns a deal by identifier.
+The method `crm.deal.get` returns a deal by its identifier.
 
 ## Method parameters
 
-{% include [Сноска о параметрах](../../../_includes/required.md) %}
+{% include [Note on parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
-`тип` | **Description** || 
+`type` | **Description** || 
 || **id***
-[`integer`](../../data-types.md) | Deal identifier.
+[`integer`](../../data-types.md) | Identifier of the deal.
 
-The identifier can be obtained using methods [crm.deal.list](./crm-deal-list.md) or [crm.deal.add](./crm-deal-add.md) ||
+The identifier can be obtained using the methods [crm.deal.list](./crm-deal-list.md) or [crm.deal.add](./crm-deal-add.md) ||
 |#
 
-{% note tip "Связанные методы и темы" %}
+{% note tip "Related methods and topics" %}
 
 [{#T}](./recurring-deals/crm-deal-recurring-get.md)
 
@@ -33,7 +33,7 @@ The identifier can be obtained using methods [crm.deal.list](./crm-deal-list.md)
 
 ## Code examples
 
-{% include [Сноска о примерах](../../../_includes/examples.md) %}
+{% include [Note on examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -154,7 +154,7 @@ HTTP status: **200**
 {
     "result": {
         "ID": "410",
-        "TITLE": "Новая сделка #1",
+        "TITLE": "New deal #1",
         "TYPE_ID": "COMPLEX",
         "STAGE_ID": "PREPARATION",
         "PROBABILITY": "99",
@@ -175,8 +175,8 @@ HTTP status: **200**
         "DATE_MODIFY": "2024-08-30T14:29:00+02:00",
         "OPENED": "Y",
         "CLOSED": "N",
-        "COMMENTS": "[B]Пример комментария[\/B]",
-        "ADDITIONAL_INFO": "Дополнительная информация",
+        "COMMENTS": "[B]Example comment[\/B]",
+        "ADDITIONAL_INFO": "Additional information",
         "LOCATION_ID": null,
         "CATEGORY_ID": "0",
         "STAGE_SEMANTIC_ID": "P",
@@ -185,7 +185,7 @@ HTTP status: **200**
         "IS_RETURN_CUSTOMER": "N",
         "IS_REPEATED_APPROACH": "N",
         "SOURCE_ID": "CALLBACK",
-        "SOURCE_DESCRIPTION": "Дополнительно об источнике",
+        "SOURCE_DESCRIPTION": "Additional information about the source",
         "ORIGINATOR_ID": null,
         "ORIGIN_ID": null,
         "MOVED_BY_ID": "1",
@@ -198,7 +198,7 @@ HTTP status: **200**
         "UTM_TERM": null,
         "PARENT_ID_1220": "22",
         "LAST_ACTIVITY_BY": "1",
-        "UF_CRM_1721244482250": "Привет мир!"
+        "UF_CRM_1721244482250": "Hello world!"
     },
     "time": {
         "start": 1725020945.541275,
@@ -216,26 +216,26 @@ HTTP status: **200**
 
 #|
 || **Name**
-`тип` | **Description** ||
+`type` | **Description** ||
 || **result**
-[`deal`](#deal) | Root element of the response. Contains information about deal fields. Structure described [ниже](#deal) ||
+[`deal`](#deal) | Root element of the response. Contains information about the deal fields. The structure is described [below](#deal) ||
 || **time**
-[`time`](../../data-types.md#time) | Information about request execution time ||
+[`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
 
 #### Deal type {#deal}
 
 #|
 || **Name**
-`тип` | **Description** ||
+`type` | **Description** ||
 || **ID**
-[`integer`](../../data-types.md) | Deal identifier ||
+[`integer`](../../data-types.md) | Identifier of the deal ||
 || **TITLE**
-[`string`](../../data-types.md) | Name ||
+[`string`](../../data-types.md) | Title ||
 || **TYPE_ID**
-[`crm_status`](../data-types.md) | String identifier of the deal type. 
+[`crm_status`](../data-types.md) | String identifier of the deal type.  
 
-More details about the obtained deal type can be retrieved with method [crm.status.list](../status/crm-status-list.md) by passing in a filter:
+You can learn more about the retrieved deal type using [crm.status.list](../status/crm-status-list.md), passing in the filter:
 
 ```
 {
@@ -245,11 +245,11 @@ More details about the obtained deal type can be retrieved with method [crm.stat
 ```
 ||
 || **CATEGORY_ID**
-[`crm_category`](../data-types.md) | Pipeline. More details about this pipeline can be retrieved with method [crm.category.get](../universal/category/crm-category-get.md) by passing `entityTypeId = 2` and `id = CATEGORY_ID` ||
+[`crm_category`](../data-types.md) | Pipeline. You can learn more about this pipeline using [crm.category.get](../universal/category/crm-category-get.md), passing `entityTypeId = 2` and `id = CATEGORY_ID` ||
 || **STAGE_ID**
-[`crm_status`](../data-types.md) | String identifier of the deal stage. 
+[`crm_status`](../data-types.md) | String identifier of the deal stage.  
 
-More details about the obtained stage can be retrieved with method [crm.status.list](../status/crm-status-list.md) by passing in a filter:
+You can learn more about the retrieved stage using [crm.status.list](../status/crm-status-list.md), passing in the filter:
 
 ```
 {
@@ -260,7 +260,7 @@ More details about the obtained stage can be retrieved with method [crm.status.l
 
 where:
 - `entityId` equals:
-    - `DEAL_STAGE` when the deal is in a common pipeline (`CATEGORY_ID = 0`)
+    - `DEAL_STAGE` when the deal is in the common pipeline (`CATEGORY_ID = 0`)
     - `DEAL_STAGE_{categoryId}`, where `categoryId = CATEGORY_ID`
 - `statusId` equals `STAGE_ID`
 ||
@@ -271,19 +271,19 @@ where:
 - `F` — unsuccessful
 ||
 || **IS_NEW**
-[`char`](../../data-types.md) | Whether the deal is new. Possible values:
+[`char`](../../data-types.md) | Indicates whether the deal is new. Possible values:
 - `Y` — yes
 - `N` — no ||
 || **IS_RECURRING**
-[`char`](../../data-types.md) | Whether the deal is regular. Possible values:
+[`char`](../../data-types.md) | Indicates whether the deal is regular. Possible values:
 - `Y` — yes
 - `N` — no ||
 || **IS_RETURN_CUSTOMER**
-[`char`](../../data-types.md) | Whether the deal is repeated. Possible values:
+[`char`](../../data-types.md) | Indicates whether the deal is repeated. Possible values:
 - `Y` — yes
 - `N` — no ||
 || **IS_REPEATED_APPROACH**
-[`char`](../../data-types.md) | Whether the request is repeated. Possible values:
+[`char`](../../data-types.md) | Indicates whether the request is repeated. Possible values:
 - `Y` — yes
 - `N` — no ||
 || **PROBABILITY**
@@ -293,31 +293,31 @@ where:
 || **OPPORTUNITY**
 [`double`](../../data-types.md) | Amount ||
 || **IS_MANUAL_OPPORTUNITY**
-[`char`](../../data-types.md) | Manual sum calculation mode enabled. Possible values:
+[`char`](../../data-types.md) | Whether manual sum calculation mode is enabled. Possible values:
 - `Y` — yes
 - `N` — no ||
 || **TAX_VALUE**
 [`double`](../../data-types.md) | Tax rate ||
 || **COMPANY_ID**
-[`crm_company`](../data-types.md) | Company identifier. 
+[`crm_company`](../data-types.md) | Company identifier.  
 
-More details about the company can be retrieved with method [crm.item.get](../universal/crm-item-get.md) by passing `entityTypeId = 4` and `id = COMPANY_ID`
+You can learn more about the company using [crm.item.get](../universal/crm-item-get.md), passing `entityTypeId = 4` and `id = COMPANY_ID`
 ||
 || **CONTACT_ID**
-[`crm_contact`](../data-types.md) | Contact identifier. Deprecated. 
+[`crm_contact`](../data-types.md) | Contact identifier. Deprecated.  
 
-To get the list of all contacts of the deal, use method [crm.deal.contact.items.get](./contacts/crm-deal-contact-items-get.md) or the universal method [crm.item.get](../universal/crm-item-get.md) ||
+To get the list of all deal contacts, use [crm.deal.contact.items.get](./contacts/crm-deal-contact-items-get.md) or the universal method [crm.item.get](../universal/crm-item-get.md) ||
 || **QUOTE_ID**
-[`crm_quote`](../data-types.md) | Quote identifier on which the deal was created. 
+[`crm_quote`](../data-types.md) | Estimate identifier on which the deal was based.  
 
-More details about the quote can be retrieved with method [crm.item.get](../universal/crm-item-get.md) by passing `entityTypeId = 7` and `id = QUOTE_ID`
+You can learn more about the estimate using [crm.item.get](../universal/crm-item-get.md), passing `entityTypeId = 7` and `id = QUOTE_ID`
 ||
 || **BEGINDATE**
 [`date`](../../data-types.md) | Start date ||
 || **CLOSEDATE**
 [`date`](../../data-types.md) | End date ||
 || **OPENED**
-[`char`](../../data-types.md) | Whether the deal is accessible to all. Possible values:
+[`char`](../../data-types.md) | Whether the deal is open to all. Possible values:
 - `Y` — yes
 - `N` — no ||
 || **CLOSED**
@@ -341,9 +341,9 @@ More details about the quote can be retrieved with method [crm.item.get](../univ
 || **MOVED_TIME**
 [`datetime`](../../data-types.md) | Date of last stage change ||
 || **SOURCE_ID**
-[`crm_status`](../data-types.md) | Source. 
+[`crm_status`](../data-types.md) | Source.  
 
-More details about the obtained source can be retrieved with method [crm.status.list](../status/crm-status-list.md) by passing in a filter:
+You can learn more about the retrieved source using [crm.status.list](../status/crm-status-list.md), passing in the filter:
 
 ```
 {
@@ -355,9 +355,9 @@ More details about the obtained source can be retrieved with method [crm.status.
 || **SOURCE_DESCRIPTION**
 [`string`](../../data-types.md) | Additional source information ||
 || **LEAD_ID**
-[`crm_lead`](../data-types.md) | Lead identifier from which the deal was created. 
+[`crm_lead`](../data-types.md) | Lead identifier on which the deal was based.  
 
-More details about the lead can be retrieved with method [crm.item.get](../universal/crm-item-get.md) by passing `entityTypeId = 1` and `id = LEAD_ID`
+You can learn more about the lead using [crm.item.get](../universal/crm-item-get.md), passing `entityTypeId = 1` and `id = LEAD_ID`
 ||
 || **ADDITIONAL_INFO**
 [`string`](../../data-types.md) | Additional information ||
@@ -378,19 +378,19 @@ More details about the lead can be retrieved with method [crm.item.get](../unive
 || **UTM_TERM**
 [`string`](../../data-types.md) | Campaign search condition ||
 || **LAST_ACTIVITY_TIME**
-[`datetime`](../../data-types.md) | Date of last activity in timeline ||
+[`datetime`](../../data-types.md) | Date of last activity in the timeline ||
 || **LAST_ACTIVITY_BY**
-[`user`](../../data-types.md) | Author of last activity in timeline ||
+[`user`](../../data-types.md) | Author of the last activity in the timeline ||
 || **UF_CRM_...**
-[`any`](../../data-types.md) | Custom fields. For example, `UF_CRM_25534736`. 
+[`any`](../../data-types.md) | Custom fields. For example, `UF_CRM_25534736`.  
 
-Depending on portal settings, deals may have a set of custom fields of various types. See more in section [о пользовательских полях](./user-defined-fields/index.md) ||
+Depending on account settings, deals may have a set of custom fields of various types. See the section [about custom fields](./user-defined-fields/index.md) ||
 || **PARENT_ID_...**
-[`crm_entity`](../data-types.md) | Relation fields. 
+[`crm_entity`](../data-types.md) | Relation fields.  
 
-If the portal has smart processes linked to deals, each such smart process has a field that stores the link between that smart process and the deal. The field holds the element identifier of that smart process. 
+If the account has SPAs linked to deals, each such smart process has a field storing the link between that SPA and the deal. The field stores the identifier of the SPA element.  
 
-For example, field `PARENT_ID_153` – link to smart process `entityTypeId=153`, stores the element identifier of this smart process linked to the current deal ||
+For example, field `PARENT_ID_153` — link to SPA `entityTypeId=153`, stores the identifier of that SPA element linked to the current deal ||
 |#
 
 ## Error handling
@@ -404,18 +404,18 @@ HTTP status: **400**
 }
 ```
 
-{% include notitle [обработка ошибок](../../../_includes/error-info.md) %}
+{% include notitle [Error handling](../../../_includes/error-info.md) %}
 
 ### Possible error codes
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `-` | `ID is not defined or invalid` | The parameter `id` is either missing or is not a positive integer ||
-|| `-` | `Access denied` | The user does not have “read” rights for this deal ||
-|| `-` | `Not found` | Deals with the provided `id` do not exist ||
+|| `-` | `ID is not defined or invalid` |  Parameter `id` is either missing or not a positive integer ||
+|| `-` | `Access denied` | User does not have permission to “read” this deal ||
+|| `-` | `Not found` | Deal with the provided `id` does not exist ||
 |#
 
-{% include [системные ошибки](./../../../_includes/system-errors.md) %}
+{% include [System errors](./../../../_includes/system-errors.md) %}
 
 ## Continue learning
 

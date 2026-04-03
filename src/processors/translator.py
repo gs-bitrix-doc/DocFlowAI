@@ -8,7 +8,7 @@ class Translator:
         self.model = model
         self.prompt = prompt
 
-    def translate(self, content: str) -> str:
+    def translate(self, content: str, system_prompt: str | None = None) -> str:
         if not self.api_key or not self.base_url:
             raise ValueError("API_KEY и BASE_URL должны быть заполнены в .env")
 
@@ -21,10 +21,11 @@ class Translator:
             json={
                 "model": self.model,
                 "messages": [
-                    {"role": "system", "content": self.prompt},
+                    {"role": "system", "content": system_prompt or self.prompt},
                     {"role": "user", "content": content},
                 ],
             },
         )
         response.raise_for_status()
-        return response.json()["choices"][0]["message"]["content"]
+        result = response.json()["choices"][0]["message"]["content"]
+        return result.replace('\u00a0', ' ')
