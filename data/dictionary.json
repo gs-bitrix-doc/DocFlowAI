@@ -44,5 +44,13 @@
     "фильтр": "filter",
     "сортировка": "sorting",
     "постраничная навигация": "pagination",
-    "источник": "source"
+    "источник": "source",
+    "мастер": "wizard",
+    "мастера": "wizard",
+    "мастере": "wizard",
+    "мастером": "wizard",
+    "мастеру": "wizard",
+    "кодировка": "encoding",
+    "кодировки": "encoding",
+    "charset": "encoding"
 }

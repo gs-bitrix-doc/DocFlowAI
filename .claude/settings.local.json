@@ -1,0 +1,25 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python -c \":*)",
+      "Bash(python -c \"from src.protector import MarkdownProtector; p = MarkdownProtector\\(\\); print\\(p.block_count\\)\")",
+      "Bash(cd:*)",
+      "Bash(python main.py input/crm-deal-get.md --dry-run)",
+      "Bash({ echo:*)",
+      "Bash(nl })",
+      "Bash(grep \"\\\\.md$\")",
+      "Bash(find C:Usersg.smolyakovgithubENb24restdocs -type f -name *.md -exec grep -l \"alt-текст\\\\|где:\\\\|\\\\*\\\\*[а-яА-ЯёЁ]\" {})",
+      "Bash(2)",
+      "Read(//c/Users/g.smolyakov/**)",
+      "Bash(dir \"C:\\\\Users\\\\g.smolyakov\")",
+      "Bash(grep -rn \"Продолж\\\\|изучени\" /mnt/c/Users/g.smolyakov/PycharmProjects/PythonProject/ --include=*.md -l)",
+      "Bash(grep -r \"| \\\\`-\" \"C:\\\\Users\\\\g.smolyakov\\\\github\\\\b24-rest-docs\\\\api-reference\\\\crm\\\\deals\")",
+      "Bash(grep -E \"^##\\\\s+\" \"C:\\\\Users\\\\g.smolyakov\\\\github\\\\b24-rest-docs\\\\api-reference\\\\landing\"/*.md)",
+      "Bash(mkdir -p \"C:/Users/g.smolyakov/PycharmProjects/PythonProject/docs\")",
+      "Bash(mv \"C:/Users/g.smolyakov/PycharmProjects/PythonProject/BACKLOG.md\" \"C:/Users/g.smolyakov/PycharmProjects/PythonProject/docs/BACKLOG.md\")",
+      "Bash(mv \"C:/Users/g.smolyakov/PycharmProjects/PythonProject/TRANSLATION_ANALYSIS.md\" \"C:/Users/g.smolyakov/PycharmProjects/PythonProject/docs/TRANSLATION_ANALYSIS.md\")",
+      "Bash(mv \"C:/Users/g.smolyakov/PycharmProjects/PythonProject/IDEAS.md\" \"C:/Users/g.smolyakov/PycharmProjects/PythonProject/docs/IDEAS.md\")",
+      "Bash(wc -l C:/Users/g.smolyakov/PycharmProjects/PythonProject/src/**/*.py C:/Users/g.smolyakov/PycharmProjects/PythonProject/src/*.py)"
+    ]
+  }
+}

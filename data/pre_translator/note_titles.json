@@ -7,5 +7,9 @@
     "Совет": "Tip",
     "Примечание": "Note",
     "Устаревшие поля": "Deprecated fields",
-    "Ограничение": "Limit"
+    "Ограничение": "Limit",
+    "Частые кейсы и сценарии": "Typical use-cases and scenarios",
+    "Пользовательская документация": "User documentation",
+    "Мы еще обновляем эту страницу": "This page is still being updated",
+    "Справочный список типов стиля и их параметров": "Reference list of style types and their parameters"
 }

@@ -46,11 +46,18 @@ def load_glossary(path: str | Path = "data/glossary.json") -> dict[str, str]:
     with open(path, encoding="utf-8") as f:
         return json.load(f)
 
-# Промпт
-def build_prompt(
-    dictionary: dict[str, str],
-    prompt_path: str | Path = "data/prompt.txt",
-) -> str:
-    base_prompt = Path(prompt_path).read_text(encoding="utf-8").strip()
-    terms = "\n".join(f"- {ru} → {en}" for ru, en in dictionary.items())
+# Базовый промпт без словаря
+def load_prompt(prompt_path: str | Path = "data/prompt.txt") -> str:
+    return Path(prompt_path).read_text(encoding="utf-8").strip()
+
+# Промпт с отфильтрованным словарём — только термины, встречающиеся в документе
+def build_prompt(base_prompt: str, dictionary: dict[str, str], content: str) -> str:
+    import re
+    filtered = {
+        ru: en for ru, en in dictionary.items()
+        if re.search(r'\b' + re.escape(ru) + r'\b', content, re.IGNORECASE)
+    }
+    if not filtered:
+        return base_prompt
+    terms = "\n".join(f"- {ru} → {en}" for ru, en in filtered.items())
     return f"{base_prompt}\n\nGlossary:\n{terms}"

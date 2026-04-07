@@ -4,12 +4,14 @@ import re
 _CODE_BLOCK_PATTERN = re.compile(r'(```[^\n]*\n)(.*?)(```)', re.DOTALL)
 _CYRILLIC_DOUBLE = re.compile(r'"([^"]*[а-яёА-ЯЁ][^"]*)"')
 _CYRILLIC_SINGLE = re.compile(r"'([^']*[а-яёА-ЯЁ][^']*)'")
-_INLINE_CODE_CYRILLIC = re.compile(r'`([^`\n]*[а-яёА-ЯЁ][^`\n]*)`')
+_INLINE_CODE_CYRILLIC = re.compile(r'`(?!])([^`\n| ][^`\n|]*[а-яёА-ЯЁ][^`\n|]*|[а-яёА-ЯЁ][^`\n|]*)`')
 
 _BATCH_PROMPT = (
     "Translate each Russian string to English. "
     "Return only the translations, one per line, in the same order. "
-    "No explanations, no quotes, no extra text."
+    "No explanations, no quotes, no extra text. "
+    "Localization rules: Russia/Россия → United States, "
+    "Russian cities → American cities, +7 → +1, .ru domains → .com."
 )
 
 
@@ -20,23 +22,40 @@ class CodeTranslator:
         self._translator = translator
 
     def translate(self, content: str) -> str:
-        content = _CODE_BLOCK_PATTERN.sub(self._process_block, content)
-        content = self._process_inline_code(content)
+        block_cyrillic = []
+        for match in _CODE_BLOCK_PATTERN.finditer(content):
+            body = match.group(2)
+            block_cyrillic += _CYRILLIC_DOUBLE.findall(body)
+            block_cyrillic += _CYRILLIC_SINGLE.findall(body)
+
+        inline_cyrillic = _INLINE_CODE_CYRILLIC.findall(content)
+
+        if not block_cyrillic and not inline_cyrillic:
+            return content
+
+        translation_map = {}
+
+        if block_cyrillic:
+            unique_block = list(dict.fromkeys(block_cyrillic))
+            block_translations = self._batch_translate(unique_block)
+            translation_map.update(dict(zip(unique_block, block_translations)))
+
+        if inline_cyrillic:
+            unique_inline = list(dict.fromkeys(inline_cyrillic))
+            inline_translations = self._batch_translate(unique_inline)
+            translation_map.update(dict(zip(unique_inline, inline_translations)))
+
+        content = _CODE_BLOCK_PATTERN.sub(
+            lambda m: self._apply_block(m, translation_map), content
+        )
+        content = self._apply_inline_code(content, translation_map)
         return content
 
-    def _process_block(self, match: re.Match) -> str:
+    def _apply_block(self, match: re.Match, translation_map: dict) -> str:
         opening, body, closing = match.group(1), match.group(2), match.group(3)
 
-        strings_double = _CYRILLIC_DOUBLE.findall(body)
-        strings_single = _CYRILLIC_SINGLE.findall(body)
-        all_cyrillic = strings_double + strings_single
-
-        if not all_cyrillic:
+        if not _CYRILLIC_DOUBLE.search(body) and not _CYRILLIC_SINGLE.search(body):
             return match.group(0)
-
-        unique = list(dict.fromkeys(all_cyrillic))
-        translations = self._batch_translate(unique)
-        translation_map = dict(zip(unique, translations))
 
         def replace_double(m: re.Match) -> str:
             return f'"{translation_map.get(m.group(1), m.group(1))}"'
@@ -48,15 +67,7 @@ class CodeTranslator:
         body = _CYRILLIC_SINGLE.sub(replace_single, body)
         return f"{opening}{body}{closing}"
 
-    def _process_inline_code(self, content: str) -> str:
-        cyrillic_inline = _INLINE_CODE_CYRILLIC.findall(content)
-        if not cyrillic_inline:
-            return content
-
-        unique = list(dict.fromkeys(cyrillic_inline))
-        translations = self._batch_translate(unique)
-        translation_map = dict(zip(unique, translations))
-
+    def _apply_inline_code(self, content: str, translation_map: dict) -> str:
         def replace_inline(m: re.Match) -> str:
             original = m.group(1)
             return f'`{translation_map.get(original, original)}`'

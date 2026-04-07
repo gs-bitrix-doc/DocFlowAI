@@ -1,4 +1,11 @@
 {
     "Продолжите изучение": "Continue learning",
-    "Параметры метода": "Method parameters"
+    "Параметры метода": "Method parameters",
+    "Примеры кода": "Code examples",
+    "Обработка ответа": "Response handling",
+    "Обработка ошибок": "Error handling",
+    "Возвращаемые данные": "Returned data",
+    "Возможные коды ошибок": "Possible error codes",
+    "Пояснения к методу": "Method notes",
+    "Частые причины серверных ошибок": "Common server error causes"
 }
