@@ -2,21 +2,52 @@
 
 Инструмент для автоматического перевода `.md` файлов документации с сохранением структуры.
 
-## Как запустить
+## Установка
 
-**1. Установить зависимости:**
+**1. Установить Python 3.11+**
+
+Скачайте с [python.org](https://www.python.org/downloads/). При установке отметьте галочку **Add Python to PATH**.
+
+Проверка:
+```bash
+python --version
+```
+
+**2. Установить uv**
+
+uv — менеджер пакетов для Python. Выполните в PowerShell:
+```powershell
+powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
+```
+
+После установки терминал покажет команду для добавления uv в PATH — скопируйте её и выполните. Выглядит примерно так:
+```powershell
+set Path=C:\Users\ИМЯ_ПОЛЬЗОВАТЕЛЯ\.local\bin;%Path%
+```
+
+Проверка:
+```bash
+uv --version
+```
+
+**3. Установить зависимости проекта**
+
 ```bash
 uv add requests python-dotenv click mistune
 ```
 
-**2. Заполнить `.env`** (скопировать из `.env.example`):
+**4. Создать файл `.env`**
+
+Скопируйте `.env.example` и переименуйте в `.env`. Заполните значения:
 ```env
 API_KEY=your_api_key_here
 BASE_URL=https://your-bitrix-gpt-endpoint
 MODEL=your_model_name
 ```
 
-**3. Запустить:**
+---
+
+## Запуск
 
 ```bash
 # Перевести один файл
