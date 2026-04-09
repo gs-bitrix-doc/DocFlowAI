@@ -10,13 +10,13 @@ class MarkdownWriter:
         if test_mode:
             filename = self._next_test_filename(stem)
         else:
-            filename = f"{stem}.en.md"
+            filename = f"{stem}.md"
         output_file = self.output_dir / filename
         output_file.write_text(content, encoding="utf-8")
         return output_file
 
     def _next_test_filename(self, stem: str) -> str:
-        existing = list(self.output_dir.glob(f"test_*_{stem}.en.md"))
+        existing = list(self.output_dir.glob(f"test_*_{stem}.md"))
         nums = []
         for f in existing:
             try:
@@ -24,4 +24,4 @@ class MarkdownWriter:
             except (IndexError, ValueError):
                 pass
         n = max(nums) + 1 if nums else 1
-        return f"test_{n}_{stem}.en.md"
+        return f"test_{n}_{stem}.md"

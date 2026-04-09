@@ -65,8 +65,8 @@ python main.py input/crm-deal-get.md --test
 
 Результат сохраняется в `output/`:
 ```
-input/crm-deal-get.md → output/crm-deal-get.en.md
-input/crm-deal-get.md → output/test_1_crm-deal-get.en.md  # с --test
+input/crm-deal-get.md → output/crm-deal-get.md
+input/crm-deal-get.md → output/test_1_crm-deal-get.md  # с --test
 ```
 
 ### Отладка пайплайна
